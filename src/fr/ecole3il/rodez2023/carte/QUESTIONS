@@ -1,0 +1,6 @@
+Question : Pourquoi pensez-vous que les classes Noeud et Graphe ont été définies avec des paramètres génériques ?
+Reponse : Les classes Noeud et Graphe utilisent des paramètres génériques pour être capables de travailler avec différents types de données.
+
+Question : Pourquoi pensez-vous que la création d'une interface est une bonne pratique dans ce contexte ?
+Réponse : Créer une interface est une bonne pratique car elle permet d'abstraire la logique spécifique des algorithmes de
+recherche de chemin, offrant ainsi flexibilité, réutilisabilité et testabilité.

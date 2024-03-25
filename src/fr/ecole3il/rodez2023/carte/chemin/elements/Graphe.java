@@ -1,4 +1,4 @@
-package fr.ecole3il.rodez2023.carte.elements;
+package fr.ecole3il.rodez2023.carte.chemin.elements;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +42,15 @@ public class Graphe<E> {
             return new ArrayList<>(voisinsMap.keySet());
         } else {
             return new ArrayList<>();
+        }
+    }
+    
+
+    public double getCoutArete(Noeud<E> depart, Noeud<E> arrivee) {
+        if (adjacence.containsKey(depart) && adjacence.get(depart).containsKey(arrivee)) {
+            return adjacence.get(depart).get(arrivee);
+        } else {
+            return Double.POSITIVE_INFINITY; 
         }
     }
 }
