@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Noeud <E> {
 	private E valeur;
+
 	private List<Noeud<E>> voisins;
 	
 	public Noeud(E valeur) {
@@ -17,7 +18,10 @@ public class Noeud <E> {
     }
 	
 	public void ajoutNoeud(Noeud<E> voisin) {
-        voisins.add(voisin);
+        if(voisin != this && !voisins.contains(voisin)) {
+            voisins.add(voisin);
+            voisin.getVoisins().add(this);
+        }
     }
 	
 	public List<Noeud<E>> getVoisins() {

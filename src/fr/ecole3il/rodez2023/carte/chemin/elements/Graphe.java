@@ -1,56 +1,45 @@
 package fr.ecole3il.rodez2023.carte.chemin.elements;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Graphe<E> {
 
-	private Map<Noeud<E>, Map<Noeud<E>, Double>> adjacence;
-	
+	private List<Noeud<E>> adjacence;
+    private Map<AbstractMap.SimpleEntry<Noeud<E>, Noeud<E>>, Double> lesAretes = new HashMap<>();
+
+
 
     public Graphe() {
-        this.adjacence = new HashMap<>();
+        this.adjacence = new ArrayList<>();
     }
     
     public void ajouterNoeud(Noeud<E> noeud) {
-        if (!adjacence.containsKey(noeud)) {
-            adjacence.put(noeud, new HashMap<>());
+        if (!adjacence.contains(noeud)) {
+            adjacence.add(noeud);
         }
     }
     
     public void ajouterArete(Noeud<E> depart, Noeud<E> arrivee, double cout) {
-        ajouterNoeud(depart);
-        ajouterNoeud(arrivee);
 
-        if (adjacence.get(depart) == null) {
-            adjacence.put(depart, new HashMap<>());
+
+        if (getCoutArete(depart, arrivee) == 0) {
+            lesAretes.put(new AbstractMap.SimpleEntry<>(depart, arrivee), cout);
         }
-
-        adjacence.get(depart).put(arrivee, cout);
-        
     }
     
     public List<Noeud<E>> getNoeuds() {
-        return new ArrayList<>(adjacence.keySet());
+        return adjacence;
     }
     
     public List<Noeud<E>> getVoisins(Noeud<E> noeud) {
-        if (adjacence.containsKey(noeud)) {
-            Map<Noeud<E>, Double> voisinsMap = adjacence.get(noeud);
-            return new ArrayList<>(voisinsMap.keySet());
-        } else {
-            return new ArrayList<>();
-        }
+        return noeud.getVoisins();
     }
     
 
     public double getCoutArete(Noeud<E> depart, Noeud<E> arrivee) {
-        if (adjacence.containsKey(depart) && adjacence.get(depart).containsKey(arrivee)) {
-            return adjacence.get(depart).get(arrivee);
-        } else {
-            return Double.POSITIVE_INFINITY; 
-        }
+        AbstractMap.SimpleEntry<Noeud<E>, Noeud<E>> key = new AbstractMap.SimpleEntry<>(depart, arrivee);
+        return (lesAretes.containsKey(key)) ? lesAretes.get(key) : 0;
     }
+
+
 }

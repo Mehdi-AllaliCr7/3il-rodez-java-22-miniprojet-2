@@ -1,11 +1,12 @@
 package fr.ecole3il.rodez2023.carte.application;
 
+import fr.ecole3il.rodez2023.carte.chemin.algorithmes.AlgorithmeAEtoile;
 import fr.ecole3il.rodez2023.carte.chemin.algorithmes.AlgorithmeChemin;
 import fr.ecole3il.rodez2023.carte.chemin.algorithmes.AlgorithmeDijkstra;
-import fr.ecole3il.rodez2023.carte.chemin.elements.Carte;
-import fr.ecole3il.rodez2023.carte.chemin.elements.Case;
-import fr.ecole3il.rodez2023.carte.chemin.elements.Chemin;
-import fr.ecole3il.rodez2023.carte.chemin.elements.Tuile;
+import fr.ecole3il.rodez2023.carte.elements.Carte;
+import fr.ecole3il.rodez2023.carte.elements.Case;
+import fr.ecole3il.rodez2023.carte.elements.Chemin;
+import fr.ecole3il.rodez2023.carte.elements.Tuile;
 import fr.ecole3il.rodez2023.carte.manipulateurs.GenerateurCarte;
 
 import javax.swing.*;

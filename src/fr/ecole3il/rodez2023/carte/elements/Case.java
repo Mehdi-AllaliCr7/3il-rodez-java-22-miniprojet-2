@@ -1,4 +1,4 @@
-package fr.ecole3il.rodez2023.carte.chemin.elements;
+package fr.ecole3il.rodez2023.carte.elements;
 
 /**
  * La classe Case représente une case sur une carte, caractérisée par une tuile et des coordonnées (x, y).
@@ -53,4 +53,6 @@ public class Case {
     public String toString() {
         return "Case [tuile=" + tuile + ", x=" + x + ", y=" + y + "]";
     }
+
+
 }

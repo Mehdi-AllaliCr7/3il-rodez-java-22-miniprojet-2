@@ -1,45 +1,50 @@
 package fr.ecole3il.rodez2023.carte.chemin.algorithmes;
 
-import fr.ecole3il.rodez2023.carte.chemin.elements.Graphe;
-import fr.ecole3il.rodez2023.carte.chemin.elements.Noeud;
+import fr.ecole3il.rodez2023.carte.AdaptateurAlgorithme;
+import fr.ecole3il.rodez2023.carte.chemin.elements.*;
+import fr.ecole3il.rodez2023.carte.elements.Carte;
+import fr.ecole3il.rodez2023.carte.elements.Case;
+import fr.ecole3il.rodez2023.carte.elements.Chemin;
 
 import java.util.*;
 
 public class AlgorithmeAEtoile <E> implements AlgorithmeChemin<E> {
     @Override
     public List<Noeud<E>> trouverChemin(Graphe<E> graphe, Noeud<E> depart, Noeud<E> arrivee) {
-
-        Map<Noeud<E>, Double> coutEstime = new HashMap<>();
-        Map<Noeud<E>, Double> coutActuel = new HashMap<>();
+        Map<Noeud<E>, Double> coutTotalEstime = new HashMap<>();
+        Map<Noeud<E>, Double> coutReel = new HashMap<>();
         Map<Noeud<E>, Noeud<E>> predecesseurs = new HashMap<>();
-        PriorityQueue<Noeud<E>> filePriorite = new PriorityQueue<>(Comparator.comparingDouble(coutEstime::get));
+        PriorityQueue<Noeud<E>> filePriorite = new PriorityQueue<>(Comparator.comparingDouble(coutTotalEstime::get));
 
+        // Initialisation des structures de données
         for (Noeud<E> noeud : graphe.getNoeuds()) {
-            coutEstime.put(noeud, Double.POSITIVE_INFINITY);
-            coutActuel.put(noeud, Double.POSITIVE_INFINITY);
+            coutTotalEstime.put(noeud, Double.POSITIVE_INFINITY);
+            coutReel.put(noeud, Double.POSITIVE_INFINITY);
             predecesseurs.put(noeud, null);
         }
-        coutEstime.put(depart, 0.0);
-        coutActuel.put(depart, 0.0);
+        coutReel.put(depart, 0.0);
+        coutTotalEstime.put(depart, 0.0); // Coût initial estimé du départ est 0
+
         filePriorite.add(depart);
 
+        // Boucle principale
         while (!filePriorite.isEmpty()) {
             Noeud<E> noeudActuel = filePriorite.poll();
             if (noeudActuel.equals(arrivee)) {
                 break;
             }
             for (Noeud<E> voisin : graphe.getVoisins(noeudActuel)) {
-                double nouveauCout = coutActuel.get(noeudActuel) + graphe.getCoutArete(noeudActuel, voisin);
-                if (nouveauCout < coutActuel.get(voisin)) {
-                    coutActuel.put(voisin, nouveauCout);
-                    double coutTotalEstime = nouveauCout + estimationHeuristique(voisin, arrivee);
-                    coutEstime.put(voisin, coutTotalEstime);
+                double nouveauCoutReel = coutReel.get(noeudActuel) + graphe.getCoutArete(noeudActuel, voisin);
+                if (nouveauCoutReel < coutReel.get(voisin)) {
+                    coutReel.put(voisin, nouveauCoutReel);
+                    coutTotalEstime.put(voisin, nouveauCoutReel + estimerCout(voisin, arrivee)); // Mise à jour de l'estimation heuristique
                     predecesseurs.put(voisin, noeudActuel);
                     filePriorite.add(voisin);
                 }
             }
         }
 
+        // Reconstruction du chemin
         List<Noeud<E>> chemin = new ArrayList<>();
         Noeud<E> noeud = arrivee;
         while (noeud != null) {
@@ -50,12 +55,14 @@ public class AlgorithmeAEtoile <E> implements AlgorithmeChemin<E> {
         return chemin;
     }
 
-    private double estimationHeuristique(Noeud<E> noeud, Noeud<E> arrivee) {
-        // Exemple d'estimation heuristique : la distance à vol d'oiseau
-        // Cette méthode doit être adaptée à votre problème spécifique
-        // Ici, nous supposons que les nœuds ont des coordonnées (x, y)
-        double distanceX = Math.abs(noeud.getX() - arrivee.getX());
-        double distanceY = Math.abs(noeud.getY() - arrivee.getY());
-        return Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+    private double estimerCout(Noeud<E> noeud, Noeud<E> arrivee) {
+        // Exemple d'estimation heuristique : distance entre les nœuds en utilisant le nombre de pas nécessaires
+        return 1.0; // Coût constant pour chaque nœud
     }
+
+    @Override
+    public Chemin trouverChemin(Carte carte, int xDepart, int yDepart, int xArrivee, int yArrivee) {
+        return AdaptateurAlgorithme.trouverChemin((AlgorithmeChemin<Case>) this, carte, xDepart, yDepart, xArrivee, yArrivee);
+    }
+
 }

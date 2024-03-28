@@ -1,4 +1,4 @@
-package fr.ecole3il.rodez2023.carte.chemin.elements;
+package fr.ecole3il.rodez2023.carte.elements;
 
 /**
  * L'énumération Tuile représente les différents types de tuiles pouvant être présents sur une carte.
