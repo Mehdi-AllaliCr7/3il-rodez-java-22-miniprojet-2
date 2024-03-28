@@ -12,95 +12,40 @@ import java.util.List;
 
 public class AdaptateurAlgorithme {
 
-    /*public static Chemin trouverChemin(AlgorithmeChemin<Case> algorithme, Carte carte, int xDepart, int yDepart, int xArrivee, int yArrivee) {
-        Graphe<Case> graphe = creerGraphe(carte);
-        Noeud<Case> depart = graphe.getNoeuds().get(xDepart * carte.getHauteur() + yDepart);
-        Noeud<Case> arrivee = graphe.getNoeuds().get(xArrivee * carte.getHauteur() + yArrivee);
-        List<Noeud<Case>> cheminNoeuds = algorithme.trouverChemin(graphe, depart, arrivee);
-        afficherChemin(cheminNoeuds);
-        return new Chemin(convertirNoeudsEnCases(cheminNoeuds));
-    }
 
-    static Graphe<Case> creerGraphe(Carte carte) {
-        Graphe<Case> graphe = new Graphe<>();
-        int largeur = carte.getLargeur();
-        int hauteur = carte.getHauteur();
-
-        // Parcours de chaque case de la carte pour créer les noeuds du graphe
-        for (int i = 0; i < largeur; i++) {
-            for (int j = 0; j < hauteur; j++) {
-                Tuile tuileCourante = carte.getTuile(i, j);
-                Case caseCourante = new Case(tuileCourante, i, j);
-                graphe.ajouterNoeud(new Noeud<>(caseCourante));
-                ajouterAretesVoisines(graphe, caseCourante, i, j, largeur, hauteur);
-            }
-        }
-        return graphe;
-    }
-
-    public static void ajouterAretesVoisines(Graphe<Case> graphe, Case currentCase, int x, int y, int largeur, int hauteur) {
-        /*List<Noeud<Case>> voisins = new ArrayList<>();
-        if (x > 0) {
-            Case leftCase = graphe.getNoeuds(x - 1, y).getValeur();
-            voisins.add(graphe.getNoeuds(x - 1, y));
-        }
-        if (x < largeur - 1) {
-            Case rightCase = graphe.getNoeuds(x + 1, y).getValeur();
-            voisins.add(graphe.getNoeuds(x + 1, y));
-        }
-        if (y > 0) {
-            Case topCase = graphe.getNoeuds(x, y - 1).getValeur();
-            voisins.add(graphe.getNoeuds(x, y - 1));
-        }
-        if (y < hauteur - 1) {
-            Case bottomCase = graphe.getNoeuds(x, y + 1).getValeur();
-            voisins.add(graphe.getNoeuds(x, y + 1));
-        }
-        for (Noeud<Case> voisin : voisins) {
-            graphe.ajouterArete(new Noeud<>(currentCase), voisin, calculerCout(currentCase, voisin.getValeur()));
-        }
-    }*/
-
-    /*static List<Case> convertirNoeudsEnCases(List<Noeud<Case>> noeuds) {
-        List<Case> cases = new ArrayList<>();
-        for (Noeud<Case> noeud : noeuds) {
-            cases.add(noeud.getValeur());
-        }
-        return cases;
-    }
-
-    static double calculerCout(Case from, Case to) {
-        // Calcul du coût entre deux cases
-        Tuile tuileFrom = from.getTuile();
-        Tuile tuileTo = to.getTuile();
-        // Vous devrez adapter cette partie selon la logique spécifique de calcul de coût entre les tuiles
-        return Math.abs(tuileFrom.getPenalite() - tuileTo.getPenalite());
-    }
-
-    public static void afficherChemin(List<Noeud<Case>> chemin) {
-        System.out.println("Le chemin est :");
-        for (Noeud<Case> noeud : chemin) {
-            Case caseCourante = noeud.getValeur();
-            System.out.println("[" + caseCourante.getX() + ", " + caseCourante.getY() + "] : " + caseCourante.getTuile());
-        }
-    }*/
+    /**
+     * Trouve le chemin le plus court entre deux cases sur la carte en utilisant l'algorithme spécifié.
+     *
+     * @param algorithme l'algorithme de recherche de chemin à utiliser
+     * @param carte      la carte sur laquelle trouver le chemin
+     * @param xDepart    la coordonnée x de la case de départ
+     * @param yDepart    la coordonnée y de la case de départ
+     * @param xArrivee   la coordonnée x de la case d'arrivée
+     * @param yArrivee   la coordonnée y de la case d'arrivée
+     * @return un objet {@code Chemin} représentant le chemin le plus court entre les deux cases spécifiées sur la carte
+     */
 
     public static Chemin trouverChemin(AlgorithmeChemin<Case> algorithme, Carte carte, int xDepart, int yDepart, int xArrivee, int yArrivee) {
         Graphe<Case> graphe = creerGraphe(carte);
+        Noeud<Case> noeudDepart = graphe.getNoeud(xDepart, yDepart);
+        Noeud<Case> noeudArrivee = graphe.getNoeud(xArrivee, yArrivee);
+        List<Noeud<Case>> cheminNoeuds = algorithme.trouverChemin(graphe, noeudDepart, noeudArrivee);
+        List<Case> cheminCases = new ArrayList<>();
+        for (Noeud<Case> noeud : cheminNoeuds) {
+            cheminCases.add(noeud.getValeur());
+        }
 
-        Tuile tuileDepart = carte.getTuile(xDepart, yDepart);
-        Case depart = new Case(tuileDepart, xDepart, yDepart);
-
-        Tuile tuileArrivee = carte.getTuile(xArrivee, yArrivee);
-        Case arrivee = new Case(tuileArrivee, xArrivee, yArrivee);
-
-        List<Noeud<Case>> chemin = algorithme.trouverChemin(graphe, new Noeud<>(depart), new Noeud<>(arrivee));
-
-        return afficherChemin(chemin);
+        return new Chemin(cheminCases);
     }
 
     // KISS
-
+    /**
+     * Crée un graphe représentant la carte en utilisant les cases comme nœuds et ajoute des arêtes entre les cases
+     * voisines dans le graphe.
+     *
+     * @param carte la carte à partir de laquelle créer le graphe
+     * @return un objet {@code Graphe<Case>} représentant le graphe de la carte
+     */
     static Graphe<Case> creerGraphe(Carte carte) {
         Graphe<Case> graphe = new Graphe<>();
         int largeur = carte.getLargeur();
@@ -124,11 +69,39 @@ public class AdaptateurAlgorithme {
 
         return graphe;
     }
-
+    /**
+     * Ajoute des arêtes entre une case donnée et ses cases voisines dans le graphe.
+     *
+     * @param graphe     le graphe auquel ajouter les arêtes
+     * @param currentCase la case à laquelle ajouter les arêtes
+     * @param x          la coordonnée x de la case
+     * @param y          la coordonnée y de la case
+     * @param largeur    la largeur de la carte
+     * @param hauteur    la hauteur de la carte
+     */
     public static void ajouterAretesVoisines(Graphe<Case> graphe, Case currentCase, int x, int y, int largeur, int hauteur) {
+        int[] dx = {1, -1, 0, 0};
+        int[] dy = {0, 0, 1, -1};
 
+        // Parcourir les voisins de la case actuelle
+        for (int i = 0; i < 4; i++) {
+            int newX = x + dx[i];
+            int newY = y + dy[i];
+
+            // Vérifier si les coordonnées sont valides
+            if (newX >= 0 && newX < largeur && newY >= 0 && newY < hauteur) {
+                Case neighborCase = new Case(currentCase.getTuile(), newX, newY);
+                graphe.ajouterArete(new Noeud<>(currentCase), new Noeud<>(neighborCase), calculerCout(currentCase, neighborCase));
+            }
+        }
     }
-
+    /**
+     * Calcule le coût pour se déplacer d'une case à une autre.
+     *
+     * @param from la case de départ
+     * @param to   la case d'arrivée
+     * @return le coût pour se déplacer de la case de départ à la case d'arrivée
+     */
     static double calculerCout(Case from, Case to) {
         Tuile tuileFrom = from.getTuile();
         Tuile tuileTo = to.getTuile();
@@ -136,6 +109,12 @@ public class AdaptateurAlgorithme {
         return Math.abs(tuileFrom.getPenalite() - tuileTo.getPenalite());
     }
 
+    /**
+     * Affiche le chemin trouvé dans la console.
+     *
+     * @param chemin le chemin trouvé
+     * @return un objet {@code Chemin} représentant le chemin trouvé
+     */
     static Chemin afficherChemin(List<Noeud<Case>> chemin) {
         if (chemin.isEmpty()) {
             System.out.println("No path found!");

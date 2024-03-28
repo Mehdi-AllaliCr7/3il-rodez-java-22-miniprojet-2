@@ -161,7 +161,7 @@ public class CarteGUI extends JFrame {
 				{ Tuile.FORET, Tuile.DESERT, Tuile.PLAINE }, { Tuile.PLAINE, Tuile.MONTAGNES, Tuile.FORET } };*/
 		// J'ai mis ça en test
 		// Donc OKLM en commentaires
-		GenerateurCarte gen = new GenerateurCarte();
+		GenerateurCarte gen = new GenerateurCarte();z
 		Carte carte = gen.genererCarte(10, 10);//new Carte(tuiles);
 
 		// Créer et afficher l'interface graphique

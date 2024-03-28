@@ -9,6 +9,14 @@ import fr.ecole3il.rodez2023.carte.elements.Chemin;
 import java.util.*;
 
 public class AlgorithmeDijkstra<E> implements AlgorithmeChemin<E>{
+    /**
+     * Recherche le chemin le plus court entre deux nœuds dans un graphe en utilisant l'algorithme de Dijkstra.
+     *
+     * @param graphe   le graphe dans lequel rechercher le chemin
+     * @param depart   le nœud de départ
+     * @param arrivee  le nœud d'arrivée
+     * @return une liste de nœuds représentant le chemin le plus court entre le nœud de départ et le nœud d'arrivée
+     */
 
     @Override
     public List<Noeud<E>> trouverChemin(Graphe<E> graphe, Noeud<E> depart, Noeud<E> arrivee) {
@@ -54,6 +62,17 @@ public class AlgorithmeDijkstra<E> implements AlgorithmeChemin<E>{
         Collections.reverse(chemin);
         return chemin;
     }
+
+    /**
+     * Recherche le chemin le plus court entre deux cases sur une carte en utilisant l'algorithme de Dijkstra.
+     *
+     * @param carte     la carte sur laquelle trouver le chemin
+     * @param xDepart   la coordonnée x de la case de départ
+     * @param yDepart   la coordonnée y de la case de départ
+     * @param xArrivee  la coordonnée x de la case d'arrivée
+     * @param yArrivee  la coordonnée y de la case d'arrivée
+     * @return un objet {@code Chemin} représentant le chemin le plus court entre les deux cases spécifiées sur la carte
+     */
 
     @Override
     public Chemin trouverChemin(Carte carte, int xDepart, int yDepart, int xArrivee, int yArrivee) {

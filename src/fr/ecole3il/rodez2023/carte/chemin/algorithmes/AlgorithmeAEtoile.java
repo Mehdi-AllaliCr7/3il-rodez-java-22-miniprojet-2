@@ -9,6 +9,14 @@ import fr.ecole3il.rodez2023.carte.elements.Chemin;
 import java.util.*;
 
 public class AlgorithmeAEtoile <E> implements AlgorithmeChemin<E> {
+    /**
+     * Trouve le chemin le plus court entre deux nœuds dans un graphe en utilisant l'algorithme A*.
+     *
+     * @param graphe   le graphe dans lequel rechercher le chemin
+     * @param depart   le nœud de départ
+     * @param arrivee  le nœud d'arrivée
+     * @return une liste de nœuds représentant le chemin trouvé, ou une liste vide si aucun chemin n'est trouvé
+     */
     @Override
     public List<Noeud<E>> trouverChemin(Graphe<E> graphe, Noeud<E> depart, Noeud<E> arrivee) {
         Map<Noeud<E>, Double> coutTotalEstime = new HashMap<>();
@@ -54,12 +62,28 @@ public class AlgorithmeAEtoile <E> implements AlgorithmeChemin<E> {
         Collections.reverse(chemin);
         return chemin;
     }
-
+    /**
+     * Estime le coût restant pour atteindre la destination depuis un nœud donné.
+     * Cette méthode fournit une heuristique pour guider l'algorithme A*.
+     *
+     * @param noeud    le nœud actuel
+     * @param arrivee  le nœud d'arrivée
+     * @return une estimation du coût restant pour atteindre la destination depuis le nœud actuel
+     */
     private double estimerCout(Noeud<E> noeud, Noeud<E> arrivee) {
         // Exemple d'estimation heuristique : distance entre les nœuds en utilisant le nombre de pas nécessaires
         return 1.0; // Coût constant pour chaque nœud
     }
-
+    /**
+     * Trouve le chemin le plus court entre deux points sur une carte en utilisant l'algorithme A*.
+     *
+     * @param carte        la carte sur laquelle rechercher le chemin
+     * @param xDepart     la coordonnée x du point de départ
+     * @param yDepart     la coordonnée y du point de départ
+     * @param xArrivee    la coordonnée x du point d'arrivée
+     * @param yArrivee    la coordonnée y du point d'arrivée
+     * @return un objet Chemin représentant le chemin trouvé
+     */
     @Override
     public Chemin trouverChemin(Carte carte, int xDepart, int yDepart, int xArrivee, int yArrivee) {
         return AdaptateurAlgorithme.trouverChemin((AlgorithmeChemin<Case>) this, carte, xDepart, yDepart, xArrivee, yArrivee);
